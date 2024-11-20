@@ -47,6 +47,15 @@ RUN pip install requests runpod huggingface_hub
 COPY start.sh rp_handler.py ./
 COPY schemas /schemas
 
+RUN mkdir -p /workspace/stable-diffusion-webui/models/Stable-diffusion/ \
+	/workspace/stable-diffusion-webui/models/VAE/ \
+	/workspace/stable-diffusion-webui/models/Lora/
+
+COPY ./diffusion_data/mode[l] /workspace/stable-diffusion-webui/models/Stable-diffusion/
+COPY ./diffusion_data/va[e] /workspace/stable-diffusion-webui/models/VAE/
+COPY ./diffusion_data/lor[a] /workspace/stable-diffusion-webui/models/Lora/
+
+
 # Start the container
 RUN chmod +x /start.sh
 ENTRYPOINT /start.sh
