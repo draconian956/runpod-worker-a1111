@@ -49,12 +49,18 @@ COPY schemas /schemas
 
 RUN mkdir -p /workspace/stable-diffusion-webui/models/Stable-diffusion/ \
 	/workspace/stable-diffusion-webui/models/VAE/ \
-	/workspace/stable-diffusion-webui/models/Lora/
+	/workspace/stable-diffusion-webui/models/Lora/ \
+	/workspace/stable-diffusion-webui/extensions/
 
 COPY ./diffusion_data/mode[l] /workspace/stable-diffusion-webui/models/Stable-diffusion/
 COPY ./diffusion_data/va[e] /workspace/stable-diffusion-webui/models/VAE/
 COPY ./diffusion_data/lor[a] /workspace/stable-diffusion-webui/models/Lora/
 
+RUN cd /workspace/stable-diffusion-webui/extensions && \
+	git clone https://github.com/ljleb/sd-webui-freeu && \
+	git clone https://github.com/ashen-sensored/sd_webui_SAG.git && \
+	cd /workspace/stable-diffusion-webui && \
+	git apply --ignore-whitespace extensions/sd_webui_SAG/automatic1111-CFGDenoiser-and-script_callbacks-mod-for-SAG.patch
 
 # Start the container
 RUN chmod +x /start.sh
